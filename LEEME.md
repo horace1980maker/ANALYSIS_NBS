@@ -48,7 +48,7 @@ docker run -p 8501:8501 nbs-analyzer
 
 ### Usando Coolify
 1. Conecta Coolify a tu repositorio de Git.
-2. Detectará automáticamente el archivo `docker-compose.yml`.
+2. Detectará automáticamente el archivo `docker-compose.yaml`.
 3. Configura tu dominio personalizado y la aplicación estará disponible en el puerto 8501.
 
 ## Estructura del Proyecto
@@ -64,7 +64,7 @@ docker run -p 8501:8501 nbs-analyzer
 │   ├── templates/        # Plantillas Jinja2 para reportes HTML
 │   └── tests/            # Pruebas automatizadas (smoke tests)
 ├── Dockerfile            # Definición del contenedor de producción
-├── docker-compose.yml    # Configuración de despliegue para Coolify
+├── docker-compose.yaml    # Configuración de despliegue para Coolify
 └── requirements.txt      # Dependencias de Python
 ```
 

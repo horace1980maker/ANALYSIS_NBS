@@ -48,7 +48,7 @@ docker run -p 8501:8501 nbs-analyzer
 
 ### Using Coolify
 1. Point Coolify to your repository.
-2. It will automatically detect the `docker-compose.yml`.
+2. It will automatically detect the `docker-compose.yaml`.
 3. Set your custom domain, and you're live on port 8501.
 
 ## Project Structure
@@ -64,7 +64,7 @@ docker run -p 8501:8501 nbs-analyzer
 │   ├── templates/        # Jinja2 HTML report templates
 │   └── tests/            # Automated smoke tests
 ├── Dockerfile            # Production container definition
-├── docker-compose.yml    # Coolify deployment config
+├── docker-compose.yaml    # Coolify deployment config
 └── requirements.txt      # Python dependencies
 ```
 
