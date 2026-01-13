@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NbS Analyzer - Storyline C Report</title>
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), #6d28d9);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        header .meta { opacity: 0.9; font-size: 0.9rem; }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+            padding: 1.25rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #ddd6fe;
+        }
+        
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #f1f5f9; font-weight: 600; color: var(--text); }
+        tr:hover { background: #f8fafc; }
+        
+        .figure { text-align: center; margin: 1.5rem 0; }
+        .figure img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .figure-caption { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; }
+        
+        .warning-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #92400e;
+        }
+        
+        .download-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+        .download-link:hover { background: #7c3aed; }
+        
+        .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; }
+        
+        .lift-positive { color: var(--success); font-weight: bold; }
+        .lift-negative { color: var(--danger); font-weight: bold; }
+        
+        footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ NbS Analyzer — Storyline C Report</h1>
+            <div class="meta">
+                <strong>Transformation-First Analysis</strong><br>
+                Input: {{ input_file }}<br>
+                Generated: {{ timestamp }}
+            </div>
+        </header>
+        
+        <div class="card">
+            <h2>📊 Summary</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ n_cases }}</div>
+                    <div class="stat-label">Total NbS Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ archetype_counts.High|default(0) }}</div>
+                    <div class="stat-label">High TTS Archetype</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ trait_rates|length }}</div>
+                    <div class="stat-label">Distinct Traits Flagged</div>
+                </div>
+            </div>
+            
+            {% if warnings %}
+            <div class="warning-box">
+                <strong>⚠️ Warnings</strong>
+                {% for warning in warnings %}
+                <div>{{ warning }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <h2>🧬 Transformative Trait Rates</h2>
+                <table>
+                    <thead><tr><th>Trait</th><th>Frequency</th><th>%</th></tr></thead>
+                    <tbody>
+                        {% for row in trait_rates %}
+                        <tr>
+                            <td>{{ row.trait }}</td>
+                            <td>{{ row.n_cases }}</td>
+                            <td>{{ row.percentage }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h2>🏷️ Top Trait Signatures</h2>
+                <table>
+                    <thead><tr><th>Signature</th><th>Cases</th></tr></thead>
+                    <tbody>
+                        {% for row in trait_signatures %}
+                        <tr>
+                            <td><code>{{ row.signature }}</code></td>
+                            <td>{{ row.n_cases }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if plot_trait_rates %}
+        <div class="card">
+            <h2>📈 Transformation Patterns</h2>
+            <div class="two-col">
+                <div class="figure">
+                    <img src="{{ plot_trait_rates }}" alt="Trait Rates">
+                    <div class="figure-caption">Frequency of transformative traits in the portfolio</div>
+                </div>
+                <div class="figure">
+                    <img src="{{ plot_tts_distribution }}" alt="TTS Distribution">
+                    <div class="figure-caption">Distribution of cases by TTS Archetype</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h2>🤝 Security Co-benefits "Lift"</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Comparison of security dimensions between High-TTS and Low-TTS cases. Positive lift indicates the dimension is more frequent in transformative cases.
+            </p>
+            <div class="two-col">
+                <table>
+                    <thead><tr><th>Dimension</th><th>High (%)</th><th>Low (%)</th><th>Lift</th></tr></thead>
+                    <tbody>
+                        {% for row in security_lift %}
+                        <tr>
+                            <td>{{ row.dimension }}</td>
+                            <td>{{ row.pct_high }}%</td>
+                            <td>{{ row.pct_low }}%</td>
+                            <td class="{{ 'lift-positive' if row.lift > 0 else 'lift-negative' if row.lift < 0 else '' }}">
+                                {{ "+" if row.lift > 0 }}{{ row.lift }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if plot_security_lift %}
+                <div class="figure">
+                    <img src="{{ plot_security_lift }}" alt="Security Lift">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Threat Coverage "Lift"</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                How transformative NbS differ in the threats they cover.
+            </p>
+            <div class="two-col">
+                <table>
+                    <thead><tr><th>Threat</th><th>High (%)</th><th>Low (%)</th><th>Lift</th></tr></thead>
+                    <tbody>
+                        {% for row in threat_lift %}
+                        <tr>
+                            <td>{{ row.threat_code }}</td>
+                            <td>{{ row.pct_high }}%</td>
+                            <td>{{ row.pct_low }}%</td>
+                            <td class="{{ 'lift-positive' if row.lift > 0 else 'lift-negative' if row.lift < 0 else '' }}">
+                                {{ "+" if row.lift > 0 }}{{ row.lift }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if plot_threat_lift %}
+                <div class="figure">
+                    <img src="{{ plot_threat_lift }}" alt="Threat Lift">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🏛️ Governance "Lift" & Enabling Packages</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Governance gaps that characterize transformative NbS.
+            </p>
+            <div class="two-col">
+                <table>
+                    <thead><tr><th>Gap</th><th>High (%)</th><th>Low (%)</th><th>Lift</th></tr></thead>
+                    <tbody>
+                        {% for row in gap_lift %}
+                        <tr>
+                            <td>{{ row.gap_code }}</td>
+                            <td>{{ row.pct_high }}%</td>
+                            <td>{{ row.pct_low }}%</td>
+                            <td class="{{ 'lift-positive' if row.lift > 0 else 'lift-negative' if row.lift < 0 else '' }}">
+                                {{ "+" if row.lift > 0 }}{{ row.lift }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="card" style="background: #fdf2f8; border-color: #fbcfe8;">
+                    <h3>📦 Enabling Packages for Leaders</h3>
+                    <table style="margin-top: 0.5rem;">
+                        <thead><tr><th>Package</th><th>% of Leaders</th></tr></thead>
+                        <tbody>
+                            {% for row in packages_high_tts %}
+                            <tr><td>{{ row.package }}</td><td>{{ row.percentage }}%</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🏆 Shortlist C1: Transformative Leaders</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Top Max(3, 20%) cases by TTS, tied-break by SBS then TCS.</p>
+            <table>
+                <thead><tr><th>ID</th><th>TTS</th><th>SBS</th><th>TCS</th><th>GGL</th></tr></thead>
+                <tbody>
+                    {% for row in shortlist_c1 %}
+                    <tr>
+                        <td><strong>{{ row.id_nbs }}</strong></td>
+                        <td>{{ row.TTS }}</td>
+                        <td>{{ row.SBS }}</td>
+                        <td>{{ row.TCS }}</td>
+                        <td>{{ row.GGL }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>🔭 Shortlist C2: Potentially Transformative (Enablers needed)</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">High TTS cases with high governance load (Top 40%).</p>
+            <table>
+                <thead><tr><th>ID</th><th>TTS</th><th>SBS</th><th>TCS</th><th>GGL</th></tr></thead>
+                <tbody>
+                    {% for row in shortlist_c2 %}
+                    <tr>
+                        <td><strong>{{ row.id_nbs }}</strong></td>
+                        <td>{{ row.TTS }}</td>
+                        <td>{{ row.SBS }}</td>
+                        <td>{{ row.TCS }}</td>
+                        <td>{{ row.GGL }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if plot_value_map_transformation %}
+        <div class="card">
+            <h2>🗺️ Transformation Value Map</h2>
+            <div class="figure">
+                <img src="{{ plot_value_map_transformation }}" alt="Value Map">
+                <div class="figure-caption">GGL (Friction) vs TTS (Transformation), bubble size = SBS (Co-benefits)</div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <h2>📁 Output Files</h2>
+            <div class="download-links">
+                <a href="../tables/trait_rates.csv" class="download-link">📊 Trait Rates</a>
+                <a href="../tables/tts_by_case.csv" class="download-link">🎯 TTS by Case</a>
+                <a href="../tables/shortlist_C1_transformative_leaders.csv" class="download-link">🏆 Leaders Shortlist</a>
+                <a href="../tables/nbs_onepagers_storyline_C.xlsx" class="download-link">📋 One-Pagers (Excel)</a>
+                <a href="../tables/qa_summary_storyline_c.csv" class="download-link">🔍 QA Summary</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Generated by NbS Analyzer v1.0.0 | Storyline C (Transformation-First)</p>
+            <p>{{ timestamp }}</p>
+        </footer>
+    </div>
+</body>
+</html>

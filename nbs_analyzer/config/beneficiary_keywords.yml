@@ -1,0 +1,162 @@
+# Beneficiary Keywords Configuration
+# Used for proxy equity analysis when numeric beneficiary counts are not available
+# Keywords are matched case-insensitively against beneficiary description fields
+
+beneficiary_groups:
+  women:
+    keywords:
+      - "mujer"
+      - "mujeres"
+      - "woman"
+      - "women"
+      - "female"
+      - "femenino"
+      - "femenina"
+      - "genero"
+      - "género"
+      - "gender"
+    color: "#e91e63"  # Pink
+    priority: 1
+
+  youth:
+    keywords:
+      - "joven"
+      - "jovenes"
+      - "jóvenes"
+      - "juventud"
+      - "youth"
+      - "young"
+      - "adolescent"
+      - "adolescente"
+      - "niño"
+      - "niña"
+      - "niños"
+      - "niñas"
+      - "child"
+      - "children"
+    color: "#9c27b0"  # Purple
+    priority: 2
+
+  farmers:
+    keywords:
+      - "agricultor"
+      - "agricultores"
+      - "agricultora"
+      - "agricultoras"
+      - "farmer"
+      - "farmers"
+      - "campesino"
+      - "campesinos"
+      - "campesina"
+      - "campesinas"
+      - "productor"
+      - "productores"
+      - "productora"
+      - "productoras"
+      - "pequeño productor"
+      - "pequeños productores"
+      - "smallholder"
+    color: "#4caf50"  # Green
+    priority: 3
+
+  indigenous:
+    keywords:
+      - "indigena"
+      - "indígena"
+      - "indigenas"
+      - "indígenas"
+      - "indigenous"
+      - "pueblos originarios"
+      - "comunidad originaria"
+      - "etnico"
+      - "étnico"
+      - "etnia"
+      - "native"
+    color: "#ff9800"  # Orange
+    priority: 4
+
+  elderly:
+    keywords:
+      - "anciano"
+      - "ancianos"
+      - "ancianas"
+      - "adulto mayor"
+      - "adultos mayores"
+      - "tercera edad"
+      - "elderly"
+      - "senior"
+      - "seniors"
+      - "elder"
+      - "elders"
+    color: "#795548"  # Brown
+    priority: 5
+
+  disabled:
+    keywords:
+      - "discapacidad"
+      - "discapacitado"
+      - "discapacitados"
+      - "capacidades diferentes"
+      - "disabled"
+      - "disability"
+      - "handicap"
+      - "differently abled"
+    color: "#607d8b"  # Blue Grey
+    priority: 6
+
+  migrants:
+    keywords:
+      - "migrante"
+      - "migrantes"
+      - "migrant"
+      - "migrants"
+      - "desplazado"
+      - "desplazados"
+      - "displaced"
+      - "refugee"
+      - "refugiado"
+      - "refugiados"
+    color: "#2196f3"  # Blue
+    priority: 7
+
+  communities:
+    keywords:
+      - "comunidad"
+      - "comunidades"
+      - "community"
+      - "communities"
+      - "colectivo"
+      - "organizacion comunitaria"
+      - "organización comunitaria"
+      - "local community"
+    color: "#009688"  # Teal
+    priority: 8
+
+  cooperatives:
+    keywords:
+      - "cooperativa"
+      - "cooperativas"
+      - "cooperative"
+      - "cooperatives"
+      - "asociacion"
+      - "asociación"
+      - "association"
+      - "grupo organizado"
+    color: "#3f51b5"  # Indigo
+    priority: 9
+
+# Configuration for proxy analysis
+proxy_settings:
+  # Minimum description length to consider for keyword scan
+  min_description_length: 10
+  
+  # Fields to scan for keywords (in order of priority)
+  description_fields:
+    - "benef_directos_desc"
+    - "benef_indirectos_desc"
+    - "beneficiarios_directos_desc"
+    - "beneficiarios_indirectos_desc"
+    - "benef_directos_descripcion"
+    - "benef_indirectos_descripcion"
+    - "descripcion"
+    - "description"

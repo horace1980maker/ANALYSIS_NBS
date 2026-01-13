@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NbS Analyzer - Storyline B Report</title>
+    <style>
+        :root {
+            --primary: #9c27b0;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), #7b1fa2);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        header .meta { opacity: 0.9; font-size: 0.9rem; }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 1.25rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #ce93d8;
+        }
+        
+        .stat-card.success {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border-color: #6ee7b7;
+        }
+        
+        .stat-card.warning {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border-color: #fcd34d;
+        }
+        
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #f1f5f9; font-weight: 600; color: var(--text); }
+        tr:hover { background: #f8fafc; }
+        
+        .figure { text-align: center; margin: 1.5rem 0; }
+        .figure img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .figure-caption { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; }
+        
+        .warning-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #92400e;
+        }
+        
+        .warning-box strong { display: block; margin-bottom: 0.25rem; }
+        
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #1e40af;
+        }
+        
+        .download-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+        
+        .download-link:hover { background: #7b1fa2; }
+        
+        footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
+        
+        .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .two-col { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌿 NbS Analyzer — Storyline B Report</h1>
+            <div class="meta">
+                <strong>Benefits/Equity-First Analysis</strong><br>
+                Input: {{ input_file }}<br>
+                Generated: {{ timestamp }}
+            </div>
+        </header>
+        
+        <div class="card">
+            <h2>📊 Summary Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ n_cases }}</div>
+                    <div class="stat-label">Total NbS Cases</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-value">{{ n_b1 }}</div>
+                    <div class="stat-label">Equity Leaders (B1)</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-value">{{ n_b2 }}</div>
+                    <div class="stat-label">Needs Enablers (B2)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ security_rates|length }}</div>
+                    <div class="stat-label">Security Dimensions</div>
+                </div>
+            </div>
+            
+            {% if warnings %}
+            <div class="warning-box">
+                <strong>⚠️ Warnings</strong>
+                {% for warning in warnings %}
+                <div>{{ warning }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            {% if not has_numeric_beneficiaries %}
+            <div class="info-box">
+                <strong>ℹ️ Proxy Mode Active</strong>
+                <div>Numeric beneficiary counts not available. Using keyword-based proxy analysis to identify priority groups.</div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h2>👥 Beneficiary Summary</h2>
+            {% if has_numeric_beneficiaries %}
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ "{:,}".format(benef_summary.total_beneficiaries|default(0)|int) }}</div>
+                    <div class="stat-label">Total Beneficiaries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ "{:,}".format(benef_summary.total_direct|default(0)|int) }}</div>
+                    <div class="stat-label">Direct</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ "{:,}".format(benef_summary.total_indirect|default(0)|int) }}</div>
+                    <div class="stat-label">Indirect</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ benef_summary.mean_total_per_case|default(0) }}</div>
+                    <div class="stat-label">Mean per Case</div>
+                </div>
+            </div>
+            {% endif %}
+            <table>
+                <tr><td>% Cases with Direct Count</td><td><strong>{{ benef_summary.pct_direct_count_present|default(0) }}%</strong></td></tr>
+                <tr><td>% Cases with Indirect Count</td><td><strong>{{ benef_summary.pct_indirect_count_present|default(0) }}%</strong></td></tr>
+                <tr><td>% Cases with Any Description</td><td><strong>{{ benef_summary.pct_any_description_present|default(0) }}%</strong></td></tr>
+            </table>
+        </div>
+        
+        <div class="two-col">
+            <div class="card">
+                <h2>🔒 Security Dimension Rates</h2>
+                <table>
+                    <thead>
+                        <tr><th>Dimension</th><th>Cases</th><th>%</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for row in security_rates %}
+                        <tr>
+                            <td>{{ row.dimension }}</td>
+                            <td>{{ row.n_cases_flagged }}</td>
+                            <td>{{ row.pct_cases_flagged }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            {% if keyword_summary %}
+            <div class="card">
+                <h2>🏷️ Priority Group Mentions</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">
+                    Keyword-based detection from beneficiary descriptions.
+                </p>
+                <table>
+                    <thead>
+                        <tr><th>Group</th><th>Cases</th><th>%</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for row in keyword_summary %}
+                        <tr>
+                            <td>{{ row.group }}</td>
+                            <td>{{ row.n_cases_mentioned }}</td>
+                            <td>{{ row.pct_cases }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if plot_security_rates %}
+        <div class="card">
+            <h2>📈 Visualizations</h2>
+            <div class="two-col">
+                <div class="figure">
+                    <img src="{{ plot_security_rates }}" alt="Security Dimension Rates">
+                    <div class="figure-caption">Security Dimension Coverage Rates</div>
+                </div>
+                {% if plot_security_dist %}
+                <div class="figure">
+                    <img src="{{ plot_security_dist }}" alt="Security Breadth Distribution">
+                    <div class="figure-caption">Security Breadth Distribution (Archetypes)</div>
+                </div>
+                {% endif %}
+            </div>
+            
+            {% if plot_benef_landscape %}
+            <div class="figure">
+                <img src="{{ plot_benef_landscape }}" alt="Beneficiaries by Landscape">
+                <div class="figure-caption">Total Beneficiaries by Landscape</div>
+            </div>
+            {% endif %}
+            
+            {% if plot_benef_security %}
+            <div class="figure">
+                <img src="{{ plot_benef_security }}" alt="Beneficiaries vs Security">
+                <div class="figure-caption">Beneficiaries vs. Security Breadth Score</div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <h2>✅ Shortlist B1: Equity Leaders</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                High security breadth + beneficiary evidence + manageable governance barriers — ready for implementation.
+            </p>
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>SBS</th><th>Archetype</th><th>GGL</th>{% if has_numeric_beneficiaries %}<th>Beneficiaries</th>{% endif %}</tr>
+                </thead>
+                <tbody>
+                    {% for row in shortlist_b1 %}
+                    <tr>
+                        <td>{{ row.id_nbs }}</td>
+                        <td><strong>{{ row.SBS }}</strong></td>
+                        <td>{{ row.security_archetype }}</td>
+                        <td>{{ row.GGL }}</td>
+                        {% if has_numeric_beneficiaries %}<td>{{ "{:,}".format(row.total_beneficiaries|default(0)|int) }}</td>{% endif %}
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No cases meet criteria</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h2>⚙️ Shortlist B2: Needs Enablers</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                High security breadth but significant governance challenges — require intervention before implementation.
+            </p>
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>SBS</th><th>Archetype</th><th>GGL</th></tr>
+                </thead>
+                <tbody>
+                    {% for row in shortlist_b2 %}
+                    <tr>
+                        <td>{{ row.id_nbs }}</td>
+                        <td><strong>{{ row.SBS }}</strong></td>
+                        <td>{{ row.security_archetype }}</td>
+                        <td>{{ row.GGL }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No cases meet criteria</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        {% if gapload_archetype %}
+        <div class="card">
+            <h2>🏛️ Governance Gap Load by Security Archetype</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                How governance barriers distribute across security breadth tiers.
+            </p>
+            <table>
+                <thead>
+                    <tr><th>Archetype</th><th>N Cases</th><th>Mean GGL</th><th>Median</th><th>Q25</th><th>Q75</th></tr>
+                </thead>
+                <tbody>
+                    {% for row in gapload_archetype %}
+                    <tr>
+                        <td>{{ row.security_archetype }}</td>
+                        <td>{{ row.n_cases }}</td>
+                        <td>{{ row.mean_GGL }}</td>
+                        <td>{{ row.median_GGL }}</td>
+                        <td>{{ row.q25_GGL }}</td>
+                        <td>{{ row.q75_GGL }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <h2>📁 Output Files</h2>
+            <div class="download-links">
+                <a href="../tables/beneficiary_summary_overall.csv" class="download-link">👥 Beneficiary Summary</a>
+                <a href="../tables/security_dimension_rates.csv" class="download-link">🔒 Security Rates</a>
+                <a href="../tables/security_breadth_by_case.csv" class="download-link">📊 Security Breadth</a>
+                <a href="../tables/shortlist_B1_equity_leaders.csv" class="download-link">✅ Equity Leaders (B1)</a>
+                <a href="../tables/shortlist_B2_needs_enablers.csv" class="download-link">⚙️ Needs Enablers (B2)</a>
+                <a href="../tables/threat_to_security_profile.csv" class="download-link">🎯 Threat→Security</a>
+                <a href="../tables/gaps_by_security_dimension.csv" class="download-link">🏛️ Gaps by Dimension</a>
+                <a href="../tables/nbs_onepagers_storyline_b.xlsx" class="download-link">📋 One-Pagers (Excel)</a>
+                <a href="../tables/qa_summary_storyline_b.csv" class="download-link">🔍 QA Summary</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📐 Methodology</h2>
+            <table>
+                <thead>
+                    <tr><th>Score</th><th>Definition</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>SBS</strong></td><td>Security Breadth Score = count of flagged security dimensions per case</td></tr>
+                    <tr><td><strong>GGL</strong></td><td>Governance Gap Load = count of unique governance gaps per case</td></tr>
+                    <tr><td><strong>Security Archetype</strong></td><td>High (≥75th percentile SBS), Medium (25th–75th), Low (≤25th)</td></tr>
+                </tbody>
+            </table>
+            
+            <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Shortlist Criteria</h3>
+            <ul style="padding-left: 1.5rem; color: var(--text-muted);">
+                <li><strong>B1 Equity Leaders:</strong> SBS ≥ 80th percentile AND (high beneficiaries OR priority group mentions) AND GGL ≤ 60th percentile</li>
+                <li><strong>B2 Needs Enablers:</strong> SBS ≥ 80th percentile AND GGL ≥ 60th percentile</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>Generated by NbS Analyzer v1.0.0 | Storyline B (Benefits/Equity-First)</p>
+            <p>{{ timestamp }}</p>
+        </footer>
+    </div>
+</body>
+</html>

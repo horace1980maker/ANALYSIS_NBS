@@ -1,0 +1,12 @@
+.venv
+__pycache__
+.pytest_cache
+*.xlsx
+*.zip
+test_outputs
+outputs
+.git
+.gitignore
+README.md
+docs
+C:\Users\narva\.gemini

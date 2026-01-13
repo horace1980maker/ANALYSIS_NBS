@@ -1,0 +1,165 @@
+# Column Name Mappings
+# Supports multilingual and varied naming conventions
+# The analyzer will use the first matching column name found
+
+id_nbs:
+  - "id_nbs"
+  - "ID_NbS"
+  - "id"
+  - "nbs_id"
+  - "caso_id"
+  - "case_id"
+
+# Identity fields in FACT_NBS
+country:
+  - "country"
+  - "pais"
+  - "país"
+  - "country_name"
+
+landscape:
+  - "landscape"
+  - "paisaje"
+  - "zona"
+  - "region"
+  - "área"
+  - "area"
+
+organization:
+  - "organization"
+  - "org"
+  - "organizacion"
+  - "organización"
+  - "institucion"
+  - "institución"
+
+combination:
+  - "combinacion"
+  - "combinación"
+  - "combination"
+  - "nbs_combination"
+  - "tipo_nbs"
+
+description:
+  - "descripcion"
+  - "descripción"
+  - "description"
+  - "detalle"
+  - "detail"
+
+# Threat table columns
+threat_code:
+  - "threat_code"
+  - "codigo_amenaza"
+  - "amenaza"
+  - "threat"
+  - "codigo"
+  - "code"
+
+threat_type:
+  - "threat_type"
+  - "tipo_amenaza"
+  - "type"
+  - "tipo"
+
+threat_label:
+  - "threat_label"
+  - "amenaza_label"
+  - "label"
+  - "nombre"
+  - "name"
+  - "threat_name"
+
+# Governance gap columns
+gap_code:
+  - "gap_code"
+  - "codigo_brecha"
+  - "brecha"
+  - "gap"
+  - "brecha_code"
+
+gap_name:
+  - "gap_name"
+  - "nombre_brecha"
+  - "brecha_nombre"
+  - "gap_label"
+
+gap_group:
+  - "gap_group"
+  - "grupo_brecha"
+  - "categoria"
+  - "category"
+
+# Security dimension columns
+dimension:
+  - "dimension"
+  - "security_dimension"
+  - "seguridad_dimension"
+  - "dim"
+  - "variable"
+
+# Trait columns
+trait:
+  - "trait"
+  - "rasgo"
+  - "transformative_trait"
+  - "rasgo_transformador"
+
+# Value/flag columns (binary indicators)
+value:
+  - "value"
+  - "flag"
+  - "seleccion"
+  - "selección"
+  - "selected"
+  - "bin"
+  - "valor"
+
+# Score columns in FACT_NBS (if pre-computed)
+seg_total:
+  - "seg_total"
+  - "security_total"
+  - "seguridad_total"
+
+t_score:
+  - "t_score"
+  - "traits_score"
+  - "rasgos_total"
+
+# Beneficiary columns (Storyline B)
+benef_directos_n:
+  - "benef_directos_n"
+  - "beneficiarios_directos_n"
+  - "benef_directos"
+  - "beneficiarios_directos"
+  - "direct_beneficiaries"
+  - "n_direct"
+
+benef_indirectos_n:
+  - "benef_indirectos_n"
+  - "beneficiarios_indirectos_n"
+  - "benef_indirectos"
+  - "beneficiarios_indirectos"
+  - "indirect_beneficiaries"
+  - "n_indirect"
+
+benef_directos_desc:
+  - "benef_directos_desc"
+  - "beneficiarios_directos_desc"
+  - "benef_directos_descripcion"
+  - "direct_beneficiaries_desc"
+  - "descripcion_benef_directos"
+
+benef_indirectos_desc:
+  - "benef_indirectos_desc"
+  - "beneficiarios_indirectos_desc"
+  - "benef_indirectos_descripcion"
+  - "indirect_beneficiaries_desc"
+  - "descripcion_benef_indirectos"
+
+# Organization field (additional aliases)
+organizacion_local:
+  - "organizacion_local"
+  - "organización_local"
+  - "local_organization"
+  - "org_local"

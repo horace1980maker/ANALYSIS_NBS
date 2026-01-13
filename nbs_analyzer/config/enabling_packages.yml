@@ -1,0 +1,55 @@
+# Governance Gap Enabling Packages
+# Maps gap codes to thematic packages for intervention design
+# Gap codes should match those in LOOKUP_GOV_GAPS (e.g., B1.1, B2.3)
+
+packages:
+  Coordination:
+    description: "Gaps related to multi-stakeholder coordination and collaboration"
+    gap_codes:
+      - "B2.1"
+      - "B2.2"
+      - "B2.3"
+      - "B2.4"
+      - "B2.5"
+      - "B2.6"
+
+  Rights_Access:
+    description: "Gaps related to land tenure, resource rights, and access"
+    gap_codes:
+      - "B1.1"
+      - "B1.2"
+      - "B1.3"
+      - "B1.4"
+      - "B1.5"
+      - "B1.6"
+
+  Technical_Capacity:
+    description: "Gaps related to technical knowledge and implementation capacity"
+    gap_codes:
+      - "B3.1"
+      - "B3.2"
+      - "B3.3"
+      - "B3.4"
+      - "B3.5"
+      - "B3.6"
+
+  Financial_Resources:
+    description: "Gaps related to funding, investment, and financial sustainability"
+    gap_codes:
+      - "B4.1"
+      - "B4.2"
+      - "B4.3"
+      - "B4.4"
+      - "B4.5"
+      - "B4.6"
+
+# Default package for gaps not matching any above
+default_package: "Uncategorized"
+
+# Package priority for reporting (higher = more critical)
+priority_order:
+  - "Rights_Access"
+  - "Financial_Resources"
+  - "Technical_Capacity"
+  - "Coordination"
+  - "Uncategorized"
