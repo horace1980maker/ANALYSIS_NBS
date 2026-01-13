@@ -25,7 +25,7 @@ COPY . .
 
 # Install the analyzer package
 # We install it in-place so the imports in app.py still work if they reference internal src
-RUN pip install -e ./nbs_analyzer
+RUN pip install ./nbs_analyzer
 
 # Expose Streamlit port
 EXPOSE 8501
