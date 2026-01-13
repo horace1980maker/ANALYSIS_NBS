@@ -139,18 +139,31 @@ INLINE_TEMPLATE = """
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
+            table-layout: fixed;
         }
         
         th, td {
             padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         th {
             background: #f1f5f9;
             font-weight: 600;
             color: var(--text);
+            white-space: normal;
+        }
+        
+        td {
+            white-space: normal;
+        }
+        
+        td code {
+            word-break: break-all;
+            white-space: pre-wrap;
         }
         
         tr:hover {
@@ -297,8 +310,8 @@ INLINE_TEMPLATE = """
                     <thead>
                         <tr>
                             <th>Code</th>
-                            <th>Threat</th>
-                            <th>Cases</th>
+                            <th>Threat Name</th>
+                            <th># Cases</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -319,8 +332,8 @@ INLINE_TEMPLATE = """
                     <thead>
                         <tr>
                             <th>Code</th>
-                            <th>Threat</th>
-                            <th>Cases</th>
+                            <th>Threat Name</th>
+                            <th># Cases</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -370,11 +383,11 @@ INLINE_TEMPLATE = """
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>VS</th>
-                        <th>TCS</th>
-                        <th>SBS</th>
-                        <th>TTS</th>
-                        <th>GGL</th>
+                        <th>VS (ValueScore)</th>
+                        <th>TCS (Threat Coverage)</th>
+                        <th>SBS (Security Breadth)</th>
+                        <th>TTS (Transf. Traits)</th>
+                        <th>GGL (Gov. Gap Load)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -404,11 +417,11 @@ INLINE_TEMPLATE = """
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>VS</th>
-                        <th>TCS</th>
-                        <th>SBS</th>
-                        <th>TTS</th>
-                        <th>GGL</th>
+                        <th>VS (ValueScore)</th>
+                        <th>TCS (Threat Coverage)</th>
+                        <th>SBS (Security Breadth)</th>
+                        <th>TTS (Transf. Traits)</th>
+                        <th>GGL (Gov. Gap Load)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -435,8 +448,8 @@ INLINE_TEMPLATE = """
                 <thead>
                     <tr>
                         <th>Code</th>
-                        <th>Gap</th>
-                        <th>Cases</th>
+                        <th>Gap Name</th>
+                        <th># Cases</th>
                         <th>%</th>
                     </tr>
                 </thead>

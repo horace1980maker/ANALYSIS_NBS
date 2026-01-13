@@ -87,9 +87,11 @@
         .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
         .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
         
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: #f1f5f9; font-weight: 600; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; table-layout: fixed; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); word-wrap: break-word; overflow-wrap: break-word; }
+        th { background: #f1f5f9; font-weight: 600; color: var(--text); white-space: normal; }
+        td { white-space: normal; }
+        td code { word-break: break-all; white-space: pre-wrap; }
         tr:hover { background: #f8fafc; }
         
         .figure { text-align: center; margin: 1.5rem 0; }
@@ -226,7 +228,7 @@
                 <h2>🔒 Security Dimension Rates</h2>
                 <table>
                     <thead>
-                        <tr><th>Dimension</th><th>Cases</th><th>%</th></tr>
+                        <tr><th>Security Dimension</th><th># Cases</th><th>%</th></tr>
                     </thead>
                     <tbody>
                         {% for row in security_rates %}
@@ -248,7 +250,7 @@
                 </p>
                 <table>
                     <thead>
-                        <tr><th>Group</th><th>Cases</th><th>%</th></tr>
+                        <tr><th>Priority Group</th><th># Cases</th><th>%</th></tr>
                     </thead>
                     <tbody>
                         {% for row in keyword_summary %}
@@ -303,7 +305,7 @@
             </p>
             <table>
                 <thead>
-                    <tr><th>ID</th><th>SBS</th><th>Archetype</th><th>GGL</th>{% if has_numeric_beneficiaries %}<th>Beneficiaries</th>{% endif %}</tr>
+                    <tr><th>ID</th><th>SBS (Security Breadth)</th><th>Security Archetype</th><th>GGL (Gov. Gap Load)</th>{% if has_numeric_beneficiaries %}<th>Beneficiaries</th>{% endif %}</tr>
                 </thead>
                 <tbody>
                     {% for row in shortlist_b1 %}
@@ -328,7 +330,7 @@
             </p>
             <table>
                 <thead>
-                    <tr><th>ID</th><th>SBS</th><th>Archetype</th><th>GGL</th></tr>
+                    <tr><th>ID</th><th>SBS (Security Breadth)</th><th>Security Archetype</th><th>GGL (Gov. Gap Load)</th></tr>
                 </thead>
                 <tbody>
                     {% for row in shortlist_b2 %}
@@ -353,7 +355,7 @@
             </p>
             <table>
                 <thead>
-                    <tr><th>Archetype</th><th>N Cases</th><th>Mean GGL</th><th>Median</th><th>Q25</th><th>Q75</th></tr>
+                    <tr><th>Security Archetype</th><th># Cases</th><th>Mean GGL</th><th>Median</th><th>Q25</th><th>Q75</th></tr>
                 </thead>
                 <tbody>
                     {% for row in gapload_archetype %}

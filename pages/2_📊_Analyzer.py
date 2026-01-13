@@ -240,12 +240,39 @@ def create_results_zip(output_dir: Path) -> bytes:
     return zip_buffer.getvalue()
 
 
+
+ABBREVIATIONS = {
+    "TCS": "TCS (Threat Coverage Score)",
+    "SBS": "SBS (Security Breadth Score)",
+    "TTS": "TTS (Transformative Traits Score)",
+    "GGL": "GGL (Governance Gap Load)",
+    "VS": "VS (ValueScore)",
+    "n_AC": "n_AC (# Climatic Threats)",
+    "n_ANC": "n_ANC (# Non-Climatic Threats)",
+    "id_nbs": "ID (NbS Identifier)",
+    "n_cases": "# Cases",
+    "threat_code": "Code",
+    "threat_label": "Threat Name",
+    "gap_code": "Gap Code",
+    "gap_name": "Gap Name",
+    "dimension": "Security Dimension",
+    "trait": "Trait",
+    "count": "# Cases",
+    "percentage": "% Cases",
+}
+
+
+def rename_with_abbreviations(df: pd.DataFrame) -> pd.DataFrame:
+    """Rename columns to include full names for better readability."""
+    return df.rename(columns=ABBREVIATIONS)
+
+
 def render_stats(stats: Dict[str, Any]):
     st.markdown(f"""
     <div class="stats-grid">
         <div class="stat-card"><div class="stat-value">{stats.get('n_cases', 0)}</div><div class="stat-label">NbS Cases</div></div>
-        <div class="stat-card"><div class="stat-value">{stats.get('n_ac', 0)}</div><div class="stat-label">AC Threats</div></div>
-        <div class="stat-card"><div class="stat-value">{stats.get('n_anc', 0)}</div><div class="stat-label">ANC Threats</div></div>
+        <div class="stat-card"><div class="stat-value">{stats.get('n_ac', 0)}</div><div class="stat-label">Climatic Threats (AC)</div></div>
+        <div class="stat-card"><div class="stat-value">{stats.get('n_anc', 0)}</div><div class="stat-label">Non-Climatic Threats (ANC)</div></div>
         <div class="stat-card"><div class="stat-value">{stats.get('n_low_friction', 0)}</div><div class="stat-label">Low Friction</div></div>
         <div class="stat-card"><div class="stat-value">{stats.get('n_enablers', 0)}</div><div class="stat-label">Needs Enablers</div></div>
     </div>
@@ -655,7 +682,7 @@ if st.session_state.analysis_results:
         with tab1:
             st.markdown("### NbS Scores")
             if not results["scores"].empty:
-                st.dataframe(results["scores"], use_container_width=True, height=400)
+                st.dataframe(rename_with_abbreviations(results["scores"]), use_container_width=True, height=400)
             else:
                 st.info("No scores computed.")
         
@@ -666,7 +693,7 @@ if st.session_state.analysis_results:
                 st.markdown("### ✅ Low Friction Shortlist")
                 st.markdown("<p style='color: #94a3b8;'>High value + low governance barriers</p>", unsafe_allow_html=True)
                 if not results["shortlist_low"].empty:
-                    st.dataframe(results["shortlist_low"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["shortlist_low"]), use_container_width=True)
                 else:
                     st.info("No cases meet low friction criteria.")
             
@@ -674,7 +701,7 @@ if st.session_state.analysis_results:
                 st.markdown("### ⚙️ Needs Enablers Shortlist")
                 st.markdown("<p style='color: #94a3b8;'>High value + high governance barriers</p>", unsafe_allow_html=True)
                 if not results["shortlist_high"].empty:
-                    st.dataframe(results["shortlist_high"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["shortlist_high"]), use_container_width=True)
                 else:
                     st.info("No cases meet enablers criteria.")
         
@@ -684,21 +711,21 @@ if st.session_state.analysis_results:
             with col1:
                 st.markdown("### 🌡️ Climatic Threats (AC)")
                 if not results["threats_ac"].empty:
-                    st.dataframe(results["threats_ac"].head(15), use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["threats_ac"].head(15)), use_container_width=True)
                 else:
                     st.info("No AC threats found.")
             
             with col2:
                 st.markdown("### 🔥 Non-Climatic Threats (ANC)")
                 if not results["threats_anc"].empty:
-                    st.dataframe(results["threats_anc"].head(15), use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["threats_anc"].head(15)), use_container_width=True)
                 else:
                     st.info("No ANC threats found.")
         
         with tab4:
             st.markdown("### 🏛️ Top Governance Gaps")
             if not results["gaps"].empty:
-                st.dataframe(results["gaps"].head(20), use_container_width=True)
+                st.dataframe(rename_with_abbreviations(results["gaps"].head(20)), use_container_width=True)
             else:
                 st.info("No governance gaps found.")
     elif storyline == "B":
@@ -707,13 +734,13 @@ if st.session_state.analysis_results:
         with tab1:
             st.markdown("### Security Dimension Rates")
             if not results["security_rates"].empty:
-                st.dataframe(results["security_rates"], use_container_width=True, height=400)
+                st.dataframe(rename_with_abbreviations(results["security_rates"]), use_container_width=True, height=400)
             else:
                 st.info("No security dimension data.")
             
             st.markdown("### Security Breadth by Case")
             if not results["security_breadth"].empty:
-                st.dataframe(results["security_breadth"].head(20), use_container_width=True)
+                st.dataframe(rename_with_abbreviations(results["security_breadth"].head(20)), use_container_width=True)
             else:
                 st.info("No security breadth data.")
         
@@ -724,7 +751,7 @@ if st.session_state.analysis_results:
                 st.markdown("### ✅ B1: Equity Leaders")
                 st.markdown("<p style='color: #94a3b8;'>High SBS + beneficiary evidence + low GGL</p>", unsafe_allow_html=True)
                 if not results["shortlist_b1"].empty:
-                    st.dataframe(results["shortlist_b1"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["shortlist_b1"]), use_container_width=True)
                 else:
                     st.info("No cases meet equity leaders criteria.")
             
@@ -732,14 +759,14 @@ if st.session_state.analysis_results:
                 st.markdown("### ⚙️ B2: Needs Enablers")
                 st.markdown("<p style='color: #94a3b8;'>High SBS + high governance barriers</p>", unsafe_allow_html=True)
                 if not results["shortlist_b2"].empty:
-                    st.dataframe(results["shortlist_b2"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["shortlist_b2"]), use_container_width=True)
                 else:
                     st.info("No cases meet enablers criteria.")
         
         with tab3:
             st.markdown("### 👥 Beneficiary Summary")
             if not results["benef_summary"].empty:
-                st.dataframe(results["benef_summary"], use_container_width=True)
+                st.dataframe(rename_with_abbreviations(results["benef_summary"]), use_container_width=True)
             else:
                 st.info("No beneficiary summary data.")
         
@@ -747,7 +774,7 @@ if st.session_state.analysis_results:
             st.markdown("### 🏷️ Priority Group Keyword Mentions")
             st.markdown("<p style='color: #94a3b8;'>Groups detected from beneficiary descriptions</p>", unsafe_allow_html=True)
             if not results["keyword_summary"].empty:
-                st.dataframe(results["keyword_summary"], use_container_width=True)
+                st.dataframe(rename_with_abbreviations(results["keyword_summary"]), use_container_width=True)
             else:
                 st.info("No keyword mentions detected.")
     
@@ -759,7 +786,7 @@ if st.session_state.analysis_results:
             with col1:
                 st.markdown("### Transformative Trait Rates")
                 if not results["trait_rates"].empty:
-                    st.dataframe(results["trait_rates"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["trait_rates"]), use_container_width=True)
             with col2:
                 st.markdown("### Trait Portfolio Description")
                 st.info("See the full HTML report for detailed trait co-occurrence analysis and signatures.")
@@ -767,7 +794,7 @@ if st.session_state.analysis_results:
         with tab2:
             st.markdown("### Case Performance (TTS & SBS)")
             if not results["tts_by_case"].empty:
-                st.dataframe(results["tts_by_case"], use_container_width=True)
+                st.dataframe(rename_with_abbreviations(results["tts_by_case"]), use_container_width=True)
             else:
                 st.info("No scores available.")
         
@@ -776,22 +803,22 @@ if st.session_state.analysis_results:
             with col1:
                 st.markdown("### Security Dimensions Lift")
                 if not results["security_lift"].empty:
-                    st.dataframe(results["security_lift"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["security_lift"]), use_container_width=True)
             with col2:
                 st.markdown("### Threat Coverage Lift")
                 if not results["threat_lift"].empty:
-                    st.dataframe(results["threat_lift"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["threat_lift"]), use_container_width=True)
         
         with tab4:
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown("### ✅ C1: Transformative Leaders")
                 if not results["shortlist_c1"].empty:
-                    st.dataframe(results["shortlist_c1"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["shortlist_c1"]), use_container_width=True)
             with col2:
                 st.markdown("### ⚙️ C2: Needs Enablers")
                 if not results["shortlist_c2"].empty:
-                    st.dataframe(results["shortlist_c2"], use_container_width=True)
+                    st.dataframe(rename_with_abbreviations(results["shortlist_c2"]), use_container_width=True)
     
     # Run another analysis
     st.markdown("---")

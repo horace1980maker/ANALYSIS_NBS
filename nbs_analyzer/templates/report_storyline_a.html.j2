@@ -87,9 +87,11 @@
         .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
         .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
         
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: #f1f5f9; font-weight: 600; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; table-layout: fixed; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); word-wrap: break-word; overflow-wrap: break-word; }
+        th { background: #f1f5f9; font-weight: 600; color: var(--text); white-space: normal; }
+        td { white-space: normal; }
+        td code { word-break: break-all; white-space: pre-wrap; }
         tr:hover { background: #f8fafc; }
         
         .figure { text-align: center; margin: 1.5rem 0; }
@@ -189,7 +191,7 @@
                 <h2>🌡️ Top Climatic Threats (AC)</h2>
                 <table>
                     <thead>
-                        <tr><th>Code</th><th>Threat</th><th>Cases</th></tr>
+                        <tr><th>Code</th><th>Threat Name</th><th># Cases</th></tr>
                     </thead>
                     <tbody>
                         {% for row in top_ac %}
@@ -207,7 +209,7 @@
                 <h2>🔥 Top Non-Climatic Threats (ANC)</h2>
                 <table>
                     <thead>
-                        <tr><th>Code</th><th>Threat</th><th>Cases</th></tr>
+                        <tr><th>Code</th><th>Threat Name</th><th># Cases</th></tr>
                     </thead>
                     <tbody>
                         {% for row in top_anc %}
@@ -254,7 +256,7 @@
             </p>
             <table>
                 <thead>
-                    <tr><th>ID</th><th>VS</th><th>TCS</th><th>SBS</th><th>TTS</th><th>GGL</th></tr>
+                    <tr><th>ID</th><th>VS (ValueScore)</th><th>TCS (Threat Coverage)</th><th>SBS (Security Breadth)</th><th>TTS (Transf. Traits)</th><th>GGL (Gov. Gap Load)</th></tr>
                 </thead>
                 <tbody>
                     {% for row in shortlist_low_friction %}
@@ -280,7 +282,7 @@
             </p>
             <table>
                 <thead>
-                    <tr><th>ID</th><th>VS</th><th>TCS</th><th>SBS</th><th>TTS</th><th>GGL</th></tr>
+                    <tr><th>ID</th><th>VS (ValueScore)</th><th>TCS (Threat Coverage)</th><th>SBS (Security Breadth)</th><th>TTS (Transf. Traits)</th><th>GGL (Gov. Gap Load)</th></tr>
                 </thead>
                 <tbody>
                     {% for row in shortlist_needs_enablers %}
@@ -303,7 +305,7 @@
             <h2>🏛️ Top Governance Gaps</h2>
             <table>
                 <thead>
-                    <tr><th>Code</th><th>Gap</th><th>Cases</th><th>%</th></tr>
+                    <tr><th>Code</th><th>Gap Name</th><th># Cases</th><th>%</th></tr>
                 </thead>
                 <tbody>
                     {% for row in top_gaps %}

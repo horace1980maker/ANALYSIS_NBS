@@ -77,9 +77,11 @@
         .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
         .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
         
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: #f1f5f9; font-weight: 600; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; table-layout: fixed; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); word-wrap: break-word; overflow-wrap: break-word; }
+        th { background: #f1f5f9; font-weight: 600; color: var(--text); white-space: normal; }
+        td { white-space: normal; }
+        td code { word-break: break-all; white-space: pre-wrap; }
         tr:hover { background: #f8fafc; }
         
         .figure { text-align: center; margin: 1.5rem 0; }
@@ -164,7 +166,7 @@
             <div class="card">
                 <h2>🧬 Transformative Trait Rates</h2>
                 <table>
-                    <thead><tr><th>Trait</th><th>Frequency</th><th>%</th></tr></thead>
+                    <thead><tr><th>Trait Name</th><th># Cases</th><th>%</th></tr></thead>
                     <tbody>
                         {% for row in trait_rates %}
                         <tr>
@@ -179,7 +181,7 @@
             <div class="card">
                 <h2>🏷️ Top Trait Signatures</h2>
                 <table>
-                    <thead><tr><th>Signature</th><th>Cases</th></tr></thead>
+                    <thead><tr><th>Trait Signature</th><th># Cases</th></tr></thead>
                     <tbody>
                         {% for row in trait_signatures %}
                         <tr>
@@ -215,7 +217,7 @@
             </p>
             <div class="two-col">
                 <table>
-                    <thead><tr><th>Dimension</th><th>High (%)</th><th>Low (%)</th><th>Lift</th></tr></thead>
+                    <thead><tr><th>Security Dimension</th><th>High TTS (%)</th><th>Low TTS (%)</th><th>Lift</th></tr></thead>
                     <tbody>
                         {% for row in security_lift %}
                         <tr>
@@ -244,7 +246,7 @@
             </p>
             <div class="two-col">
                 <table>
-                    <thead><tr><th>Threat</th><th>High (%)</th><th>Low (%)</th><th>Lift</th></tr></thead>
+                    <thead><tr><th>Threat Code</th><th>High TTS (%)</th><th>Low TTS (%)</th><th>Lift</th></tr></thead>
                     <tbody>
                         {% for row in threat_lift %}
                         <tr>
@@ -273,7 +275,7 @@
             </p>
             <div class="two-col">
                 <table>
-                    <thead><tr><th>Gap</th><th>High (%)</th><th>Low (%)</th><th>Lift</th></tr></thead>
+                    <thead><tr><th>Gap Code</th><th>High TTS (%)</th><th>Low TTS (%)</th><th>Lift</th></tr></thead>
                     <tbody>
                         {% for row in gap_lift %}
                         <tr>
@@ -305,7 +307,7 @@
             <h2>🏆 Shortlist C1: Transformative Leaders</h2>
             <p style="color: var(--text-muted); margin-bottom: 1rem;">Top Max(3, 20%) cases by TTS, tied-break by SBS then TCS.</p>
             <table>
-                <thead><tr><th>ID</th><th>TTS</th><th>SBS</th><th>TCS</th><th>GGL</th></tr></thead>
+                <thead><tr><th>ID</th><th>TTS (Transf. Traits)</th><th>SBS (Security Breadth)</th><th>TCS (Threat Coverage)</th><th>GGL (Gov. Gap Load)</th></tr></thead>
                 <tbody>
                     {% for row in shortlist_c1 %}
                     <tr>
@@ -324,7 +326,7 @@
             <h2>🔭 Shortlist C2: Potentially Transformative (Enablers needed)</h2>
             <p style="color: var(--text-muted); margin-bottom: 1rem;">High TTS cases with high governance load (Top 40%).</p>
             <table>
-                <thead><tr><th>ID</th><th>TTS</th><th>SBS</th><th>TCS</th><th>GGL</th></tr></thead>
+                <thead><tr><th>ID</th><th>TTS (Transf. Traits)</th><th>SBS (Security Breadth)</th><th>TCS (Threat Coverage)</th><th>GGL (Gov. Gap Load)</th></tr></thead>
                 <tbody>
                     {% for row in shortlist_c2 %}
                     <tr>
