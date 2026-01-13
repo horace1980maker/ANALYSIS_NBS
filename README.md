@@ -72,4 +72,4 @@ docker run -p 8501:8501 nbs-analyzer
 - For detailed methodology and CLI usage, see the [nbs_analyzer README](nbs_analyzer/README.md).
 
 ## License
-MIT License - Built for CATIE Consultancy.
+MIT License - Built for CATIE.
