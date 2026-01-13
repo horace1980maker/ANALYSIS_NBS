@@ -1,6 +1,6 @@
 # NbS Analyzer Suite 🌿
 
-A comprehensive web application for transforming and analyzing Nature-based Solutions (NbS) portfolios. Built for **CATIE Consultancy**, this suite provides a deterministic, two-step workflow to move from raw data to actionable strategic insights.
+A comprehensive web application for transforming and analyzing Nature-based Solutions (NbS) portfolios. Built for **CATIE**, this suite provides a deterministic, two-step workflow to move from raw data to actionable strategic insights.
 
 ## components
 
